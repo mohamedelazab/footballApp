@@ -1,4 +1,4 @@
-package com.example.footballapp.ui.favorite
+package com.example.footballapp.presentation.favorite
 
 import com.airbnb.mvrx.BaseMvRxViewModel
 import com.airbnb.mvrx.MavericksViewModelFactory

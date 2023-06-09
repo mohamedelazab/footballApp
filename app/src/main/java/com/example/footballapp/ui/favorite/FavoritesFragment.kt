@@ -9,6 +9,7 @@ import com.airbnb.mvrx.MavericksView
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.example.footballapp.databinding.FragmentFavoritesBinding
+import com.example.footballapp.presentation.favorite.FavoritesViewModel
 
 class FavoritesFragment : Fragment(), MavericksView {
 

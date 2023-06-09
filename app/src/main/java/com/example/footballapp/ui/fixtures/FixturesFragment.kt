@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.airbnb.mvrx.MavericksView
+import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.example.footballapp.databinding.FragmentFixturesBinding
+import com.example.footballapp.presentation.fixtures.FixturesViewModel
 
 class FixturesFragment : Fragment(), MavericksView {
 
@@ -30,6 +32,8 @@ class FixturesFragment : Fragment(), MavericksView {
 
     override fun invalidate() {
         withState(viewModel) { state ->
+            if (state.fixturesState is Success) {
+            }
         }
     }
 
