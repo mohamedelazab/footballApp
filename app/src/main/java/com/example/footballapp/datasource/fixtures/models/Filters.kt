@@ -1,4 +1,4 @@
-package com.example.footballapp.model
+package com.example.footballapp.datasource.fixtures.models
 
 
 import com.squareup.moshi.JsonClass

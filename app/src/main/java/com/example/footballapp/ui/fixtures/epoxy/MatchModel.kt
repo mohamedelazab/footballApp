@@ -4,19 +4,19 @@ import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.example.footballapp.R
 import com.example.footballapp.databinding.ViewMatchBinding
+import com.example.footballapp.domain.models.MatchDomain
 import com.example.footballapp.helper.ViewBindingEpoxyModelWithHolder
-import com.example.footballapp.model.Match
 
 @EpoxyModelClass
 abstract class MatchModel : ViewBindingEpoxyModelWithHolder<ViewMatchBinding>() {
 
     @EpoxyAttribute
-    lateinit var match: Match
+    lateinit var match: MatchDomain
 
     override fun ViewMatchBinding.bind() {
         tvHomeTeamName.text = match.homeTeam?.name
         tvAwayTeamName.text = match.awayTeam?.name
-        if (match.status == Match.Status.FINISHES.value) {
+        if (match.status == MatchDomain.Status.FINISHES.value) {
             tvMatchResult.text = tvMatchResult.context.getString(
                 R.string.text_result,
                 match.score?.fullTime?.homeTeam.toString(),

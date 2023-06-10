@@ -1,13 +1,13 @@
-package com.example.footballapp.model
+package com.example.footballapp.datasource.fixtures.models
 
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class FullTime(
+data class Penalties(
     @Json(name = "awayTeam")
-    val awayTeam: Int? = 0,
+    val awayTeam: Int? = null,
     @Json(name = "homeTeam")
-    val homeTeam: Int? = 0
+    val homeTeam: Int? = null
 )

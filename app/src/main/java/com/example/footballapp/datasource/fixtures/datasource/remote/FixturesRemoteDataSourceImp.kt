@@ -1,11 +1,10 @@
-package com.example.footballapp.datasource.fixtures.datasource
+package com.example.footballapp.datasource.fixtures.datasource.remote
 
+import com.example.footballapp.datasource.fixtures.models.FixturesResponse
 import com.example.footballapp.datasource.fixtures.service.ApiService
-import com.example.footballapp.model.FixturesResponse
 import io.reactivex.Single
 import javax.inject.Inject
 
-// add explicit argument to all
 class FixturesRemoteDataSourceImp @Inject constructor(
     private val apiService: ApiService,
 ) : FixturesRemoteDataSource {

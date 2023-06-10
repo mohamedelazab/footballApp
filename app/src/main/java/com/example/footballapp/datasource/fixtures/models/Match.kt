@@ -1,4 +1,4 @@
-package com.example.footballapp.model
+package com.example.footballapp.datasource.fixtures.models
 
 
 import com.squareup.moshi.Json
@@ -32,8 +32,4 @@ data class Match(
     val status: String? = "",
     @Json(name = "utcDate")
     val utcDate: String = ""
-) {
-    enum class Status(val value: String) {
-        FINISHES("FINISHED")
-    }
-}
+)

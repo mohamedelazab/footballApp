@@ -1,11 +1,9 @@
-package com.example.footballapp.datasource.fixtures.service
+package com.example.footballapp.datasource.fixtures.datasource.local
 
 import com.example.footballapp.datasource.fixtures.models.FixturesResponse
 import io.reactivex.Single
-import retrofit2.http.GET
 
-interface ApiService {
+interface FixturesLocalDataSource {
 
-    @GET("competitions/2021/matches")
     fun getFixtures(): Single<FixturesResponse>
 }
