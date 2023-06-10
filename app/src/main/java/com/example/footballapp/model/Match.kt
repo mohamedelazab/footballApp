@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class Matche(
+data class Match(
     @Json(name = "awayTeam")
     val awayTeam: AwayTeam? = AwayTeam(),
     @Json(name = "group")
@@ -31,5 +31,9 @@ data class Matche(
     @Json(name = "status")
     val status: String? = "",
     @Json(name = "utcDate")
-    val utcDate: String? = ""
-)
+    val utcDate: String = ""
+) {
+    enum class Status(val value: String) {
+        FINISHES("FINISHED")
+    }
+}

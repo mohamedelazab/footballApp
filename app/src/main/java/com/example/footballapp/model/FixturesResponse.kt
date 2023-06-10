@@ -13,5 +13,5 @@ data class FixturesResponse(
     @Json(name = "filters")
     val filters: Filters? = Filters(),
     @Json(name = "matches")
-    val matches: List<Matche?>? = listOf()
+    val matches: List<Match> = listOf()
 )

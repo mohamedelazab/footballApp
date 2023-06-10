@@ -2,4 +2,5 @@
     <string name="app_name">footballApp</string>
     <string name="title_fixtures">Fixtures</string>
     <string name="title_favorites">Favorites</string>
+    <string name="text_result">%s - %s</string>
 </resources>
