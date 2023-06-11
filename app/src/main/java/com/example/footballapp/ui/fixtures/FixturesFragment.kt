@@ -2,8 +2,11 @@ package com.example.footballapp.ui.fixtures
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.fragmentViewModel
+import com.airbnb.mvrx.withState
 import com.example.footballapp.BaseMvRxRecyclerFragmentWithViewBinding
 import com.example.footballapp.databinding.FragmentFixturesBinding
 import com.example.footballapp.presentation.fixtures.FixturesViewModel
@@ -64,5 +67,9 @@ class FixturesFragment : BaseMvRxRecyclerFragmentWithViewBinding<FragmentFixture
 
     override fun invalidate() {
         recyclerView.requestModelBuild()
+        withState(viewModel) { state ->
+            binding.progressBar.isVisible =
+                state.fixturesState is Loading || state.currentDayFixtures is Loading
+        }
     }
 }

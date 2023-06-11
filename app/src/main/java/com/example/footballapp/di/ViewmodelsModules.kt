@@ -3,7 +3,6 @@ package com.example.footballapp.di
 import com.airbnb.mvrx.hilt.AssistedViewModelFactory
 import com.airbnb.mvrx.hilt.MavericksViewModelComponent
 import com.airbnb.mvrx.hilt.ViewModelKey
-import com.example.footballapp.presentation.favorite.FavoritesViewModel
 import com.example.footballapp.presentation.fixtures.FixturesViewModel
 import dagger.Binds
 import dagger.Module
@@ -17,9 +16,4 @@ interface ViewModelsModule {
     @IntoMap
     @ViewModelKey(FixturesViewModel::class)
     fun provideFixturesViewModel(factory: FixturesViewModel.Factory): AssistedViewModelFactory<*, *>
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(FavoritesViewModel::class)
-    fun provideFavoritesViewModel(factory: FavoritesViewModel.Factory): AssistedViewModelFactory<*, *>
 }
