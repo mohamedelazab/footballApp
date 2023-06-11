@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
         android:padding="0dp"
-        app:icon="@drawable/ic_favorite_black_24dp"
+        app:icon="@drawable/selector_favorite"
         app:layout_constraintBottom_toBottomOf="@id/cl_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cl_content" />

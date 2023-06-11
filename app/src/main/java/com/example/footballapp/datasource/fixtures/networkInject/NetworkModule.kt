@@ -6,6 +6,7 @@ import com.example.footballapp.BuildConfig
 import com.example.footballapp.datasource.fixtures.LazySchedulers
 import com.example.footballapp.datasource.fixtures.LazySchedulersImp
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,6 +27,14 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideSchedulers(): LazySchedulers = LazySchedulersImp()
+
+    @Singleton
+    @Provides
+    fun provideMoshi(): Moshi {
+        return Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
+    }
 
     @Provides
     @Singleton

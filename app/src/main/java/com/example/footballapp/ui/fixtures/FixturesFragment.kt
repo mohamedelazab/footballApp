@@ -30,6 +30,9 @@ class FixturesFragment : BaseMvRxRecyclerFragmentWithViewBinding<FragmentFixture
                                 match {
                                     id(it.id)
                                     match(it)
+                                    onFavoriteClickListener {
+
+                                    }
                                 }
                             }
                         }
@@ -44,6 +47,9 @@ class FixturesFragment : BaseMvRxRecyclerFragmentWithViewBinding<FragmentFixture
                                 match {
                                     id(it.id)
                                     match(it)
+                                    onFavoriteClickListener {
+
+                                    }
                                 }
                             }
                         }

@@ -1,11 +1,15 @@
 package com.example.footballapp.datasource.fixtures.models
 
 
+import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class Match(
+    @PrimaryKey(autoGenerate = true)
+    var localId: Int? = null,
+
     @Json(name = "awayTeam")
     val awayTeam: AwayTeam? = AwayTeam(),
     @Json(name = "group")

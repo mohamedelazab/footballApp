@@ -24,14 +24,14 @@ class FixturesViewModel @AssistedInject constructor(
         getFixtures()
     }
 
-    private fun getFixtures() {
+    fun getFixtures() {
         getFixturesUseCase.invoke()
             .subscribeOn(lazySchedulers.io())
             .doFinally { getCurrentDayFixtures() }
             .execute { copy(fixturesState = it) }
     }
 
-    private fun getCurrentDayFixtures() {
+    fun getCurrentDayFixtures() {
         withState {
             if (it.fixturesState !is Success) return@withState
 

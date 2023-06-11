@@ -13,7 +13,14 @@ abstract class MatchModel : ViewBindingEpoxyModelWithHolder<ViewMatchBinding>() 
     @EpoxyAttribute
     lateinit var match: MatchDomain
 
+    @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
+    lateinit var onFavoriteClickListener: () -> Unit
+
     override fun ViewMatchBinding.bind() {
+        btnFavRestaurant.isChecked = match.isFavoriteToUser
+        btnFavRestaurant.setOnClickListener {
+            onFavoriteClickListener()
+        }
         tvHomeTeamName.text = match.homeTeam?.name
         tvAwayTeamName.text = match.awayTeam?.name
         if (match.status == MatchDomain.Status.FINISHES.value) {
@@ -26,6 +33,10 @@ abstract class MatchModel : ViewBindingEpoxyModelWithHolder<ViewMatchBinding>() 
             //TODO: you can use date util and move the whole condition outside the model
             tvMatchResult.text = match.utcDate.slice(11 until match.utcDate.length - 4)
         }
+    }
+
+    override fun ViewMatchBinding.unbind() {
+        btnFavRestaurant.setOnClickListener(null)
     }
 
     override fun getDefaultLayout(): Int = R.layout.view_match
