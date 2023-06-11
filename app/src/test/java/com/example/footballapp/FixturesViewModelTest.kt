@@ -78,7 +78,7 @@ class FixturesViewModelTest {
         fixturesViewModel.getCurrentDayFixtures()
         lazyTestSchedulers.triggerActions()
         withState(fixturesViewModel) {
-            Assert.assertTrue(it.currentDayFixtures is Success)
+            Assert.assertTrue(it.currentDayFixturesState is Success)
         }
     }
 
@@ -96,7 +96,7 @@ class FixturesViewModelTest {
         fixturesViewModel.getCurrentDayFixtures()
         lazyTestSchedulers.triggerActions()
         withState(fixturesViewModel) {
-            Assert.assertTrue((it.currentDayFixtures)()!!.isEmpty())
+            Assert.assertTrue((it.currentDayFixturesState)()!!.isEmpty())
         }
     }
 

@@ -12,6 +12,7 @@ import com.example.footballapp.databinding.FragmentFixturesBinding
 import com.example.footballapp.presentation.fixtures.FixturesViewModel
 import com.example.footballapp.ui.fixtures.epoxy.dateOfMatch
 import com.example.footballapp.ui.fixtures.epoxy.match
+import com.example.footballapp.ui.fixtures.epoxy.toggleList
 
 class FixturesFragment : BaseMvRxRecyclerFragmentWithViewBinding<FragmentFixturesBinding>() {
 
@@ -23,25 +24,14 @@ class FixturesFragment : BaseMvRxRecyclerFragmentWithViewBinding<FragmentFixture
             if (!::simpleController.isInitialized)
                 simpleController = simpleController(viewModel) { state ->
 
-                    if (state.currentDayFixtures is Success) {
-                        (state.currentDayFixtures)().firstNotNullOfOrNull { (date, matches) ->
-                            dateOfMatch {
-                                id(date)
-                                dayDate(date)
-                            }
-                            matches.forEach {
-                                match {
-                                    id(it.id)
-                                    match(it)
-                                    onFavoriteClickListener {
+                    if (state.currentDayFixturesState is Success && state.fixturesState is Success) {
+                        toggleList {
+                            id("toggle_list_View")
+                            onToggleItemChecked {
 
-                                    }
-                                }
                             }
                         }
-                    }
-                    if (state.fixturesState is Success) {
-                        (state.fixturesState)().forEach { (date, matches) ->
+                        state.allFixtures.forEach { (date, matches) ->
                             dateOfMatch {
                                 id(date)
                                 dayDate(date)
@@ -69,7 +59,7 @@ class FixturesFragment : BaseMvRxRecyclerFragmentWithViewBinding<FragmentFixture
         recyclerView.requestModelBuild()
         withState(viewModel) { state ->
             binding.progressBar.isVisible =
-                state.fixturesState is Loading || state.currentDayFixtures is Loading
+                state.fixturesState is Loading || state.currentDayFixturesState is Loading
         }
     }
 }

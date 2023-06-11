@@ -37,7 +37,14 @@ class FixturesViewModel @AssistedInject constructor(
 
             getCurrentDayFixturesUseCase.invoke((it.fixturesState)())
                 .subscribeOn(lazySchedulers.io())
-                .execute { copy(currentDayFixtures = it) }
+                .execute {
+                    copy(
+                        currentDayFixturesState = it,
+                        allFixtures = (it)()?.plus(
+                            (fixturesState)() ?: emptyMap()
+                        ) ?: emptyMap()
+                    )
+                }
         }
     }
 

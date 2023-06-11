@@ -7,5 +7,6 @@ import com.example.footballapp.domain.models.MatchDomain
 
 data class FixturesState(
     val fixturesState: Async<Map<String, List<MatchDomain>>> = Uninitialized,
-    val currentDayFixtures: Async<Map<String, List<MatchDomain>>> = Uninitialized
+    val currentDayFixturesState: Async<Map<String, List<MatchDomain>>> = Uninitialized,
+    val allFixtures: Map<String, List<MatchDomain>> = emptyMap()
 ) : MvRxState
