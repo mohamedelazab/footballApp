@@ -70,9 +70,9 @@ class NetworkModule {
                     it.addInterceptor(
                         HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY),
                     )
+                    it.addInterceptor(ChuckerInterceptor.Builder(context).build())
                 }
             }
-            .addInterceptor(ChuckerInterceptor.Builder(context).build())
             .build()
 
 }
