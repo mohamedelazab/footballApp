@@ -36,12 +36,12 @@ class FixturesFragment : BaseMvRxRecyclerFragmentWithViewBinding<FragmentFixture
                                 id(date)
                                 dayDate(date)
                             }
-                            matches.forEach {
+                            matches.forEach { match ->
                                 match {
-                                    id(it.id)
-                                    match(it)
+                                    id(match.id)
+                                    match(match)
                                     onFavoriteClickListener {
-
+                                        viewModel.updateFavorites(match)
                                     }
                                 }
                             }

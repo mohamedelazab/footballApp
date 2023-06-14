@@ -11,7 +11,7 @@ interface FixturesRepository {
 
     fun getFavoriteMatches(): Single<List<Match>>
 
-    fun addToFavorites(match: Match): Completable
+    fun removeFromFavorites(match: Match): Completable
 
-    fun removeFromFavorites(localId: Int): Completable
+    fun addToFavorites(match: Match): Completable
 }

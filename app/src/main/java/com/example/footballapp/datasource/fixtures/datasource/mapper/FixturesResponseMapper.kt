@@ -4,11 +4,13 @@ import com.example.footballapp.datasource.fixtures.models.Area
 import com.example.footballapp.datasource.fixtures.models.AwayTeam
 import com.example.footballapp.datasource.fixtures.models.Competition
 import com.example.footballapp.datasource.fixtures.models.ExtraTime
+import com.example.footballapp.datasource.fixtures.models.Filters
 import com.example.footballapp.datasource.fixtures.models.FixturesResponse
 import com.example.footballapp.datasource.fixtures.models.FullTime
 import com.example.footballapp.datasource.fixtures.models.HalfTime
 import com.example.footballapp.datasource.fixtures.models.HomeTeam
 import com.example.footballapp.datasource.fixtures.models.Match
+import com.example.footballapp.datasource.fixtures.models.Odds
 import com.example.footballapp.datasource.fixtures.models.Penalties
 import com.example.footballapp.datasource.fixtures.models.Referee
 import com.example.footballapp.datasource.fixtures.models.Score
@@ -17,29 +19,29 @@ import com.example.footballapp.domain.models.AreaDomain
 import com.example.footballapp.domain.models.AwayTeamDomain
 import com.example.footballapp.domain.models.CompetitionDomain
 import com.example.footballapp.domain.models.ExtraTimeDomain
-import com.example.footballapp.domain.models.FiltersDomain
 import com.example.footballapp.domain.models.FixturesResponseDomain
 import com.example.footballapp.domain.models.FullTimeDomain
 import com.example.footballapp.domain.models.HalfTimeDomain
 import com.example.footballapp.domain.models.HomeTeamDomain
 import com.example.footballapp.domain.models.MatchDomain
-import com.example.footballapp.domain.models.OddsDomain
 import com.example.footballapp.domain.models.PenaltiesDomain
 import com.example.footballapp.domain.models.RefereeDomain
 import com.example.footballapp.domain.models.ScoreDomain
 import com.example.footballapp.domain.models.SeasonDomain
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
 
-fun FixturesResponse.toDomainFixtures() =
-    FixturesResponseDomain(
-        competition = competition?.toDomainCompetition(),
+fun FixturesResponseDomain.toFixtures() =
+    FixturesResponse(
+        competition = competition?.toCompetition(),
         count = count,
-        filters = toDomainFilters(),
-        matches = matches.map { it.toDomainMatch() }
+        filters = toFilters(),
+        matches = matches.map { it.toMatch() }
     )
 
-fun Competition.toDomainCompetition() =
-    CompetitionDomain(
-        area = area?.toDomainArea(),
+fun CompetitionDomain.toCompetition() =
+    Competition(
+        area = area?.toArea(),
         code = code,
         id = id,
         lastUpdated = lastUpdated,
@@ -47,63 +49,68 @@ fun Competition.toDomainCompetition() =
         plan = plan,
     )
 
-fun toDomainFilters() =
-    FiltersDomain()
+fun toFilters() =
+    Filters()
 
-fun Match.toDomainMatch() =
-    MatchDomain(
-        awayTeam?.toDomainAwayTeam(),
+fun MatchDomain.toMatch() =
+    Match(
+        awayTeam?.toAwayTeam(),
         group,
-        homeTeam?.toDomainHomeTeam(),
+        homeTeam?.toHomeTeam(),
         id,
         lastUpdated,
         matchday,
-        toDomainOdds(),
-        referees?.map { it?.toDomainReferee() },
-        score?.toDomainScore(),
-        season?.toDomainSeason(),
+        toOdds(),
+        referees?.map { it?.toReferee() },
+        score?.toScore(),
+        season?.toSeason(),
         stage,
         status,
         utcDate,
-        isFavoriteToUser = false
     )
 
-fun AwayTeam.toDomainAwayTeam() =
-    AwayTeamDomain(id, name)
+fun AwayTeamDomain.toAwayTeam() =
+    AwayTeam(id, name)
 
-fun HomeTeam.toDomainHomeTeam() =
-    HomeTeamDomain(id, name)
+fun HomeTeamDomain.toHomeTeam() =
+    HomeTeam(id, name)
 
-fun toDomainOdds() =
-    OddsDomain()
+fun toOdds() =
+    Odds()
 
-fun Referee.toDomainReferee() =
-    RefereeDomain(id, name, nationality, role)
+fun RefereeDomain.toReferee() =
+    Referee(id, name, nationality, role)
 
-fun Season.toDomainSeason() =
-    SeasonDomain(currentMatchday, endDate, id, startDate)
+fun SeasonDomain.toSeason() =
+    Season(currentMatchday, endDate, id, startDate)
 
-fun Score.toDomainScore() =
-    ScoreDomain(
+fun ScoreDomain.toScore() =
+    Score(
         duration = duration,
-        extraTime = extraTime?.toDomainExtraTime(),
-        fullTime = fullTime?.toDomainFullTime(),
-        halfTime = halfTime?.toDomainHalfTime(),
-        penalties = penalties?.toDomainPenalties(),
+        extraTime = extraTime?.toExtraTime(),
+        fullTime = fullTime?.toFullTime(),
+        halfTime = halfTime?.toHalfTime(),
+        penalties = penalties?.toPenalties(),
         winner = winner
     )
 
-fun ExtraTime.toDomainExtraTime() =
-    ExtraTimeDomain(awayTeam, homeTeam)
+fun ExtraTimeDomain.toExtraTime() =
+    ExtraTime(awayTeam, homeTeam)
 
-fun FullTime.toDomainFullTime() =
-    FullTimeDomain(awayTeam, homeTeam)
+fun FullTimeDomain.toFullTime() =
+    FullTime(awayTeam, homeTeam)
 
-fun HalfTime.toDomainHalfTime() =
-    HalfTimeDomain(awayTeam, homeTeam)
+fun HalfTimeDomain.toHalfTime() =
+    HalfTime(awayTeam, homeTeam)
 
-fun Penalties.toDomainPenalties() =
-    PenaltiesDomain(awayTeam, homeTeam)
+fun PenaltiesDomain.toPenalties() =
+    Penalties(awayTeam, homeTeam)
 
-fun Area.toDomainArea() =
-    AreaDomain(id = id, name = name)
+fun AreaDomain.toArea() =
+    Area(id = id, name = name)
+
+fun Match.toJsonString(): String {
+    val moshi = Moshi.Builder().build()
+    val jsonAdapter: JsonAdapter<Match> = moshi.adapter(Match::class.java)
+    return jsonAdapter.toJson(this)
+}

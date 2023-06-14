@@ -20,9 +20,9 @@ class FixturesRepositoryImp @Inject constructor(
     override fun getFavoriteMatches(): Single<List<Match>> =
         localDataSource.getFavoriteMatches()
 
+    override fun removeFromFavorites(match: Match): Completable =
+        localDataSource.removeFromFavorites(match)
+
     override fun addToFavorites(match: Match): Completable =
         localDataSource.addToFavorites(match)
-
-    override fun removeFromFavorites(localId: Int): Completable =
-        localDataSource.removeFromFavorites(localId)
 }
