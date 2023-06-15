@@ -5,7 +5,6 @@ import com.example.footballapp.datasource.fixtures.datasource.remote.FixturesRem
 import com.example.footballapp.datasource.fixtures.models.FixturesResponse
 import com.example.footballapp.datasource.fixtures.models.Match
 import com.example.footballapp.domain.repository.FixturesRepository
-import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -20,7 +19,7 @@ class FixturesRepositoryImp @Inject constructor(
     override fun getFavoriteMatches(): Single<List<Match?>> =
         localDataSource.getFavoriteMatches()
 
-    override fun removeFromFavorites(match: Match): Completable =
+    override fun removeFromFavorites(match: Match) =
         localDataSource.removeFromFavorites(match)
 
     override fun addToFavorites(match: Match) =

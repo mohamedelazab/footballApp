@@ -2,7 +2,6 @@ package com.example.footballapp.domain.repository
 
 import com.example.footballapp.datasource.fixtures.models.FixturesResponse
 import com.example.footballapp.datasource.fixtures.models.Match
-import io.reactivex.Completable
 import io.reactivex.Single
 
 interface FixturesRepository {
@@ -11,7 +10,7 @@ interface FixturesRepository {
 
     fun getFavoriteMatches(): Single<List<Match?>>
 
-    fun removeFromFavorites(match: Match): Completable
+    fun removeFromFavorites(match: Match)
 
     fun addToFavorites(match: Match)
 }

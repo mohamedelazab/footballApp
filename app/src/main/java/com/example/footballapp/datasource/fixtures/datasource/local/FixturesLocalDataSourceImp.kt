@@ -5,7 +5,6 @@ import com.example.footballapp.datasource.fixtures.datasource.di.PrefModule
 import com.example.footballapp.datasource.fixtures.datasource.mapper.toJsonString
 import com.example.footballapp.datasource.fixtures.datasource.mapper.toMatch
 import com.example.footballapp.datasource.fixtures.models.Match
-import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject
 import javax.inject.Named
@@ -23,18 +22,17 @@ class FixturesLocalDataSourceImp @Inject constructor(
             }
         )
 
-    override fun removeFromFavorites(match: Match) =
-        Completable.fromAction {
-            val oldData = sharedPreferences.getStringSet(matchesSetKey, setOf())
-            val newData = LinkedHashSet<String>()
-            oldData?.let { newData.addAll(it) }
-            newData.removeIf {
-                it.toMatch()?.id == match.id
-            }
-            sharedPreferences.edit()
-                .putStringSet(matchesSetKey, newData)
-                .apply()
+    override fun removeFromFavorites(match: Match) {
+        val oldData = sharedPreferences.getStringSet(matchesSetKey, setOf())
+        val newData = LinkedHashSet<String>()
+        oldData?.let { newData.addAll(it) }
+        newData.removeIf {
+            it.toMatch()?.id == match.id
         }
+        sharedPreferences.edit()
+            .putStringSet(matchesSetKey, newData)
+            .apply()
+    }
 
     override fun addToFavorites(match: Match) {
         val oldData = sharedPreferences.getStringSet(matchesSetKey, setOf())
