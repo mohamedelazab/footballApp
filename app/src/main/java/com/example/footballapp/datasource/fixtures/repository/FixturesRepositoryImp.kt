@@ -17,12 +17,12 @@ class FixturesRepositoryImp @Inject constructor(
     override fun getFixtures(): Single<FixturesResponse> =
         remoteDataSource.getFixtures()
 
-    override fun getFavoriteMatches(): Single<List<Match>> =
+    override fun getFavoriteMatches(): Single<List<Match?>> =
         localDataSource.getFavoriteMatches()
 
     override fun removeFromFavorites(match: Match): Completable =
         localDataSource.removeFromFavorites(match)
 
-    override fun addToFavorites(match: Match): Completable =
+    override fun addToFavorites(match: Match) =
         localDataSource.addToFavorites(match)
 }

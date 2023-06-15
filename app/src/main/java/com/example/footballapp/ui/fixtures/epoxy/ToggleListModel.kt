@@ -11,23 +11,23 @@ import com.example.footballapp.helper.ViewBindingEpoxyModelWithHolder
 abstract class ToggleListModel : ViewBindingEpoxyModelWithHolder<ViewToggleListBinding>() {
 
     @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
-    lateinit var onToggleItemChecked: (value: CheckedEnum) -> Unit
+    lateinit var onAllFixturesChecked: () -> Unit
+
+    @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
+    lateinit var onFavoritesChecked: () -> Unit
 
     override fun ViewToggleListBinding.bind() {
         group.setOnCheckedStateChangeListener { group, checkedId ->
-            if (checkedId[0] == optionAll.id) {
-                onToggleItemChecked(CheckedEnum.ALL)
+            if (checkedId.isEmpty()) {
+
+            } else if (checkedId[0] == optionAll.id) {
+                onAllFixturesChecked()
             } else {
-                onToggleItemChecked(CheckedEnum.FAVORITES)
+                onFavoritesChecked()
             }
         }
 
     }
 
     override fun getDefaultLayout(): Int = R.layout.view_toggle_list
-}
-
-enum class CheckedEnum {
-    ALL,
-    FAVORITES
 }

@@ -8,8 +8,8 @@ import com.airbnb.mvrx.hilt.hiltMavericksViewModelFactory
 import com.example.footballapp.datasource.fixtures.LazySchedulers
 import com.example.footballapp.domain.models.MatchDomain
 import com.example.footballapp.domain.usecase.fixtures.GetCurrentDayFixturesUseCase
+import com.example.footballapp.domain.usecase.fixtures.GetFavoritesUseCase
 import com.example.footballapp.domain.usecase.fixtures.GetFixturesUseCase
-import com.example.footballapp.domain.usecase.fixtures.UpdateFavoritesUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -18,27 +18,35 @@ class FixturesViewModel @AssistedInject constructor(
     @Assisted initialState: FixturesState,
     private val getFixturesUseCase: GetFixturesUseCase,
     private val getCurrentDayFixturesUseCase: GetCurrentDayFixturesUseCase,
-    private val updateFavoritesUseCase: UpdateFavoritesUseCase,
+    private val getFavoritesUseCase: GetFavoritesUseCase,
     private val lazySchedulers: LazySchedulers,
 ) : BaseMvRxViewModel<FixturesState>(initialState) {
 
     init {
         logStateChanges()
-        getFixtures()
+        getFavorites(true)
     }
 
-    fun getFixtures() {
-        getFixturesUseCase.invoke()
+    fun getFixtures(favorites: Map<String, List<MatchDomain>>) {
+        getFixturesUseCase.invoke(favorites)
             .subscribeOn(lazySchedulers.io())
             .doFinally { getCurrentDayFixtures() }
-            .execute { copy(fixturesState = it) }
+            .execute { copy(fixturesState = it, allFixtures = (it)() ?: emptyMap()) }
+    }
+
+    fun getFavorites(isInit: Boolean = false) {
+        setState { copy(allFixtures = emptyMap()) }
+        getFavoritesUseCase.invokeAllFavorites()
+            .subscribeOn(lazySchedulers.io())
+            .doOnSuccess { if (isInit) getFixtures(it) }
+            .execute { copy(favoritesState = it, allFixtures = (it)() ?: emptyMap()) }
     }
 
     fun getCurrentDayFixtures() {
-        withState {
-            if (it.fixturesState !is Success) return@withState
+        withState { state ->
+            if (state.fixturesState !is Success) return@withState
 
-            getCurrentDayFixturesUseCase.invoke((it.fixturesState)())
+            getCurrentDayFixturesUseCase.invoke((state.fixturesState)())
                 .subscribeOn(lazySchedulers.io())
                 .execute {
                     copy(
@@ -53,9 +61,9 @@ class FixturesViewModel @AssistedInject constructor(
 
     fun updateFavorites(match: MatchDomain) {
         if (match.isFavoriteToUser)
-            updateFavoritesUseCase.invokeRemoveFromFavorites(match)
+            getFavoritesUseCase.invokeRemoveFromFavorites(match)
         else
-            updateFavoritesUseCase.invokeAddToFavorites(match)
+            getFavoritesUseCase.invokeAddToFavorites(match)
     }
 
     companion object :

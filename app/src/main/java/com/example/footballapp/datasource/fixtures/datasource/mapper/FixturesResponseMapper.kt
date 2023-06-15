@@ -1,5 +1,6 @@
 package com.example.footballapp.datasource.fixtures.datasource.mapper
 
+import android.util.Log
 import com.example.footballapp.datasource.fixtures.models.Area
 import com.example.footballapp.datasource.fixtures.models.AwayTeam
 import com.example.footballapp.datasource.fixtures.models.Competition
@@ -30,6 +31,7 @@ import com.example.footballapp.domain.models.ScoreDomain
 import com.example.footballapp.domain.models.SeasonDomain
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 fun FixturesResponseDomain.toFixtures() =
     FixturesResponse(
@@ -110,7 +112,22 @@ fun AreaDomain.toArea() =
     Area(id = id, name = name)
 
 fun Match.toJsonString(): String {
-    val moshi = Moshi.Builder().build()
+    val moshi = Moshi
+        .Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
     val jsonAdapter: JsonAdapter<Match> = moshi.adapter(Match::class.java)
-    return jsonAdapter.toJson(this)
+    val json = jsonAdapter.toJson(this)
+    Log.d("CONVERT_MATCH_TO_JSON", json)
+    return json
+}
+
+fun String.toMatch(): Match? {
+    val moshi = Moshi
+        .Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
+    val jsonAdapter: JsonAdapter<Match> = moshi.adapter(Match::class.java)
+    Log.d("CONVERT_JSON_TO_MATCH", jsonAdapter.fromJson(this).toString())
+    return jsonAdapter.fromJson(this)
 }

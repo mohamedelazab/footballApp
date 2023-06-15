@@ -5,4 +5,5 @@
     <string name="text_result">%s - %s</string>
     <string name="all_fixtures">All Fixtures</string>
     <string name="favorite_fixtures">Favorite Fixtures</string>
+    <string name="no_data_to_present">No Data to Present</string>
 </resources>

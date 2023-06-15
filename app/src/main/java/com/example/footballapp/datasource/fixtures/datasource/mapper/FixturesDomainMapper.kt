@@ -50,7 +50,7 @@ fun Competition.toDomainCompetition() =
 fun toDomainFilters() =
     FiltersDomain()
 
-fun Match.toDomainMatch() =
+fun Match.toDomainMatch(isFavourite: Boolean = false) =
     MatchDomain(
         awayTeam?.toDomainAwayTeam(),
         group,
@@ -65,7 +65,7 @@ fun Match.toDomainMatch() =
         stage,
         status,
         utcDate,
-        isFavoriteToUser = false
+        isFavoriteToUser = isFavourite
     )
 
 fun AwayTeam.toDomainAwayTeam() =

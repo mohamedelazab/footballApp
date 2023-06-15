@@ -17,8 +17,9 @@ abstract class MatchModel : ViewBindingEpoxyModelWithHolder<ViewMatchBinding>() 
     lateinit var onFavoriteClickListener: () -> Unit
 
     override fun ViewMatchBinding.bind() {
-        btnFavRestaurant.isChecked = match.isFavoriteToUser
+        btnFavRestaurant.isSelected = match.isFavoriteToUser
         btnFavRestaurant.setOnClickListener {
+            btnFavRestaurant.isSelected = !btnFavRestaurant.isSelected
             onFavoriteClickListener()
         }
         tvHomeTeamName.text = match.homeTeam?.name
@@ -30,7 +31,6 @@ abstract class MatchModel : ViewBindingEpoxyModelWithHolder<ViewMatchBinding>() 
                 match.score?.fullTime?.awayTeam.toString()
             )
         } else {
-            //TODO: you can use date util and move the whole condition outside the model
             tvMatchResult.text = match.utcDate.slice(11 until match.utcDate.length - 4)
         }
     }

@@ -6,6 +6,7 @@ import com.airbnb.mvrx.test.MavericksTestRule
 import com.airbnb.mvrx.withState
 import com.example.footballapp.domain.models.MatchDomain
 import com.example.footballapp.domain.usecase.fixtures.GetCurrentDayFixturesUseCase
+import com.example.footballapp.domain.usecase.fixtures.GetFavoritesUseCase
 import com.example.footballapp.domain.usecase.fixtures.GetFixturesUseCase
 import com.example.footballapp.presentation.fixtures.FixturesState
 import com.example.footballapp.presentation.fixtures.FixturesViewModel
@@ -24,6 +25,7 @@ class FixturesViewModelTest {
     private val lazyTestSchedulers = LazyTestSchedulers()
     private val getFixturesUseCase: GetFixturesUseCase = mockk(relaxed = true)
     private val getCurrentDayFixturesUseCase: GetCurrentDayFixturesUseCase = mockk(relaxed = true)
+    private val getFavoritesUseCase: GetFavoritesUseCase = mockk(relaxed = true)
     private lateinit var fixturesViewModel: FixturesViewModel
     private var fixturesState = FixturesState()
 
@@ -31,7 +33,7 @@ class FixturesViewModelTest {
     fun `GIVEN initial state of viewModel WHEN getFixtures is invoked THEN fixturesState is Success`() {
         every { getFixturesUseCase.invoke() } returns Single.just(mapOf())
         initViewModel(fixturesState)
-        fixturesViewModel.getFixtures()
+        fixturesViewModel.getFixtures(mapOf())
         lazyTestSchedulers.triggerActions()
         withState(fixturesViewModel) {
             Assert.assertTrue(it.fixturesState is Success)
@@ -42,7 +44,7 @@ class FixturesViewModelTest {
     fun `GIVEN initial state of viewModel WHEN getFixtures is invoked and sucess THEN invoke getCurrentDayFixturesUseCase`() {
         every { getFixturesUseCase.invoke() } returns Single.just(mapOf())
         initViewModel(fixturesState)
-        fixturesViewModel.getFixtures()
+        fixturesViewModel.getFixtures(mapOf())
         lazyTestSchedulers.triggerActions()
         verify {
             getCurrentDayFixturesUseCase.invoke(mapOf())
@@ -71,6 +73,7 @@ class FixturesViewModelTest {
         val expectedMap: MutableMap<String, List<MatchDomain>> = HashMap()
         expectedMap[currentDay] = listOf()
         every { getFixturesUseCase.invoke() } returns Single.just(initialMap)
+        every { getFavoritesUseCase.invokeAllFavorites() } returns Single.just(emptyMap())
         every { getCurrentDayFixturesUseCase.invoke(initialMap) } returns Observable.just(
             expectedMap
         )
@@ -89,6 +92,7 @@ class FixturesViewModelTest {
         initialMap["2023-04-31"] = listOf()
         val expectedMap: MutableMap<String, List<MatchDomain>> = HashMap()
         every { getFixturesUseCase.invoke() } returns Single.just(initialMap)
+        every { getFavoritesUseCase.invokeAllFavorites() } returns Single.just(emptyMap())
         every { getCurrentDayFixturesUseCase.invoke(initialMap) } returns Observable.just(
             expectedMap
         )
@@ -105,6 +109,7 @@ class FixturesViewModelTest {
             initialState = viewModelState,
             getFixturesUseCase = getFixturesUseCase,
             getCurrentDayFixturesUseCase = getCurrentDayFixturesUseCase,
+            getFavoritesUseCase = getFavoritesUseCase,
             lazySchedulers = lazyTestSchedulers,
         ).also {
             fixturesViewModel = it

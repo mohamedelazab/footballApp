@@ -1,5 +1,6 @@
 package com.example.footballapp.ui.fixtures
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -11,8 +12,10 @@ import com.example.footballapp.BaseMvRxRecyclerFragmentWithViewBinding
 import com.example.footballapp.databinding.FragmentFixturesBinding
 import com.example.footballapp.presentation.fixtures.FixturesViewModel
 import com.example.footballapp.ui.fixtures.epoxy.dateOfMatch
+import com.example.footballapp.ui.fixtures.epoxy.emptyView
 import com.example.footballapp.ui.fixtures.epoxy.match
 import com.example.footballapp.ui.fixtures.epoxy.toggleList
+import java.util.UUID
 
 class FixturesFragment : BaseMvRxRecyclerFragmentWithViewBinding<FragmentFixturesBinding>() {
 
@@ -24,19 +27,24 @@ class FixturesFragment : BaseMvRxRecyclerFragmentWithViewBinding<FragmentFixture
             if (!::simpleController.isInitialized)
                 simpleController = simpleController(viewModel) { state ->
 
-                    if (state.currentDayFixturesState is Success && state.fixturesState is Success) {
-                        toggleList {
-                            id("toggle_list_View")
-                            onToggleItemChecked {
-
-                            }
+                    toggleList {
+                        id("toggle_list_View")
+                        onAllFixturesChecked {
+                            if (state.favoritesState is Success)
+                                viewModel.getFixtures((state.favoritesState)())
                         }
+                        onFavoritesChecked {
+                            viewModel.getFavorites()
+                        }
+                    }
+                    if (state.isFixturesSuccess || state.isFavoritesSuccess) {
                         state.allFixtures.forEach { (date, matches) ->
                             dateOfMatch {
                                 id(date)
                                 dayDate(date)
                             }
                             matches.forEach { match ->
+                                Log.d("MATCHES_DOMAIN", match.isFavoriteToUser.toString())
                                 match {
                                     id(match.id)
                                     match(match)
@@ -44,6 +52,11 @@ class FixturesFragment : BaseMvRxRecyclerFragmentWithViewBinding<FragmentFixture
                                         viewModel.updateFavorites(match)
                                     }
                                 }
+                            }
+                        }
+                        if (state.allFixtures.isEmpty() && state.isFixturesSuccess) {
+                            emptyView {
+                                id(UUID.randomUUID().hashCode())
                             }
                         }
                     }
